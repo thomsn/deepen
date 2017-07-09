@@ -1,6 +1,5 @@
 import unittest
 from scrape import scrape
-
 class TestScrape(unittest.TestCase):
 
     expected_deps = [

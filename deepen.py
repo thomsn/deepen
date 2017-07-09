@@ -3,6 +3,8 @@ from os import abort
 import sys
 from flask import Flask, request, render_template, redirect
 import json
+
+from compare_packages import compare_requirements
 from scrape import scrape
 app = Flask(__name__)
 
@@ -40,7 +42,7 @@ def create_project():
     print(name, url, file=sys.stderr)
     projects[name] = {
         'url': 'url',
-        'depen': scrape(url)
+        'depen': compare_requirements(scrape(url))
     }
     return redirect("projects/{}".format(name), code=302)
 
