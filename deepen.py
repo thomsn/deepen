@@ -1,11 +1,10 @@
-from os import abort
-
-import sys
-from flask import Flask, request, render_template, redirect
 import json
+import sys
 
+from flask import Flask, request, render_template, redirect
 from compare_packages import compare_requirements
-from scrape import scrape
+from dependancies.deps import get_deps
+
 app = Flask(__name__)
 
 projects = {
@@ -42,14 +41,14 @@ def create_project():
     print(name, url, file=sys.stderr)
     projects[name] = {
         'url': 'url',
-        'depen': compare_requirements(scrape(url))
+        'depen': compare_requirements(get_deps(url))
     }
     return redirect("projects/{}".format(name), code=302)
 
 
 @app.route('/projects/<name>/depen', methods=['UPDATE'])
 def update_dependancies(name):
-    dependancies = scrape(projects[name]['url'])
+    dependancies = get_deps(projects[name]['url'])
     projects[name]['depen'] = dependancies
     return json.dumps(projects[name])
 

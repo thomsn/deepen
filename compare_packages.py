@@ -13,7 +13,7 @@ def get_latest_version(module):
 
 
 def test_module_name(module):
-    # preventing a module name from escaping the cmd and messing with crao
+    # preventing a module name from escaping the cmd and messing with crap
     assert(module.isalnum())
 
 
