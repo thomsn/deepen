@@ -13,12 +13,14 @@ class ScrapePySetupDeps():
         with open(os.path.join(root, 'setup.py')) as req_file:
             text = req_file.read()
             setup_deps = []
-            install_requires = re.search(re.compile(r"install_requires\s*=\s*\[([^\]]*)\]"), text).group(1)
-            setup_deps.extend(install_requires.split(','))
+            install_requires = re.search(re.compile(r"install_requires\s*=\s*\[([^\]]*)\]"), text)
+            if install_requires:
+                setup_deps.extend(install_requires.group(1).split(','))
 
-            extras_require = re.search(re.compile(r"extras_require\s*=\s*\{([^\}]*)\}"), text).group(1)
-            for extra in re.compile(r"\[([^\]]*)\]").findall(extras_require):
-                setup_deps.extend(extra.split(','))
+            extras_require = re.search(re.compile(r"extras_require\s*=\s*\{([^\}]*)\}"), text)
+            if extras_require:
+                for extra in re.compile(r"\[([^\]]*)\]").findall(extras_require.group(1)):
+                    setup_deps.extend(extra.split(','))
 
             for dep in setup_deps:
                 for char in ',\'\" ':

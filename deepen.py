@@ -1,23 +1,12 @@
-import json
 import sys
-
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, flash
 from compare_packages import compare_requirements
 from dependancies.deps import get_deps
+from pymongo import MongoClient
 
 app = Flask(__name__)
 
-projects = {
-    'test': {
-        'depen': [
-            {
-                'name': 'Hello',
-                'version': '123'
-            }
-        ]
-    }
-}
-
+db = MongoClient('localhost:27017').deepen
 
 @app.route('/projects', methods=['GET'])
 def new_project():
@@ -25,12 +14,8 @@ def new_project():
 
 @app.route('/projects/<name>')
 def show_project(name):
-    return render_template('project.html', deps=projects[name]['depen'])
-
-
-@app.route('/projects/<name>/depen', methods=['GET'])
-def get_dependancies(name):
-    return json.dumps(projects[name]['depen'])
+    matching_projects = list(db.projects.find({'name': name}))
+    return render_template('project.html', project=matching_projects[0])
 
 
 @app.route('/projects', methods=['POST'])
@@ -38,18 +23,11 @@ def create_project():
     data = dict((key, request.form.getlist(key)) for key in request.form.keys())
     name = data['name'][0]
     url = data['url'][0]
-    print(name, url, file=sys.stderr)
-    projects[name] = {
-        'url': 'url',
-        'depen': compare_requirements(get_deps(url))
-    }
+    db.projects.insert_one(
+        {
+            'name': name,
+            'repo_url': url,
+            'deps': compare_requirements(get_deps(url))
+        }
+    )
     return redirect("projects/{}".format(name), code=302)
-
-
-@app.route('/projects/<name>/depen', methods=['UPDATE'])
-def update_dependancies(name):
-    dependancies = get_deps(projects[name]['url'])
-    projects[name]['depen'] = dependancies
-    return json.dumps(projects[name])
-
-

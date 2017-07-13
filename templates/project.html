@@ -6,18 +6,38 @@
 <body>
 
 <div class="w3-container w3-blue">
-    <h2>Deepen</h2>
+    <h2>Deepen / projects / {{project.name}}</h2>
+    <p>{{project.repo_url}}</p>
 </div>
 
-<ul class="w3-ul w3-card-4">
-    {% for dep in deps %}
-      <li class="w3-padding-16">
-    <img src="/static/images/brick.jpg" class="w3-left w3-circle w3-margin-right" style="width:50px">
-    <span class="w3-large">{{dep.name}}</span><br>
-    <span>{{dep.version}}</span>
-  </li>
-    {% endfor %}
-</ul>
+<div class="w3-content" style="max-width:680px">
+<div class="w3-row-padding" style="margin: 0 -16px">
+    {% for dep in project.deps %}
+    <div class="w3-third">
+        <div class="w3-card w3-margin w3-light-grey" style="width: 200px">
+            <div class="w3-container w3-center" style="height: 50px;">
+                <p>{{dep.name}}</p>
+            </div>
+            <!--<div class="w3-row w3-grey">-->
+                <!--<div class="w3-col s12 w3-center"><p>github.com/requests/requests</p></div>-->
+            <!--</div>-->
+            {% if dep.version is defined %}
+            <footer class="w3-row w3-grey" style="height: 70px;">
+                <div class="w3-col s4 w3-center"><p>Using   {{dep.version}}</p></div>
+                <div class="w3-col s4 w3-center"><p>Updates  {{dep.diff}}</p></div>
+                <div class="w3-col s4 w3-center"><p>Latest {{dep.latest_version}}</p></div>
+            </footer>
+            {% else %}
+            <footer class="w3-row" style="height: 70px"/>
+            {% endif %}
 
+            <!--<div class="w3-row">-->
+                <!--<div class="w3-col s12 w3-light-green w3-center"><p>34 Improvements</p></div>-->
+            <!--</div>-->
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
 </body>
 </html>

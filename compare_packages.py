@@ -21,9 +21,8 @@ def compare_requirements(requirements):
     results = []
     for requirement in requirements:
         if 'version' in requirement:
-            current_version = requirement['version']
             latest_version = get_latest_version(requirement['name'])
-            requirement['version'] = '{} -> {}'.format(current_version, latest_version)
+            requirement['latest_version'] = latest_version
             results.append(requirement)
         else:
             results.append(requirement)
