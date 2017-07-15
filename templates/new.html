@@ -1,26 +1,68 @@
 <!DOCTYPE html>
 <html>
-<title>Deepen</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<title>Deepn</title>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+
+<style>
+    .navbar {
+        background-color: #eae151;
+    }
+    .navbar-brand {
+        color: #fafdf6;
+        font-size: 200%;
+    }
+    .the_content {
+        max-width: 500px;
+        margin-top: 65px;
+    }
+    .form-control {
+        background-color: #fafdf6;
+        height: inherit;
+        border-style: hidden;
+        border-radius: 1px;
+    }
+    .btn {
+        background-color: #ccc9a1;
+        color: #fafdf6;
+        height: inherit;
+        width: 50px;
+        border-style: hidden;
+        border-radius: 1px;
+    }
+    .input-group-btn {
+        height: inherit;
+    }
+    .input-group {
+        height: 40px;
+    }
+</style>
+
+<nav class="navbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <div class="navbar-brand">
+          <p>Deepn</p>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
 <body>
-
-<div class="w3-container w3-blue">
-    <h2>Deepen</h2>
+<div class="container-fluid the_content">
+    <div class="welcome_message">
+    </div>
+    <form id="form" method="get">
+        <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" id="ProjectULR" placeholder="https://host.org/repo.git" name="url">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit" id="create"> > </button>
+              </span>
+            </div>
+        </div>
+    </form>
 </div>
-
-<form id="form" class="w3-container" method="post">
-    <p>
-        <label>Project Name</label>
-        <input class="w3-input" type="text" name="name"></p>
-    <p>
-        <label>Repository URL</label>
-        <input class="w3-input" type="text" name="url"></p>
-
-    <p>
-        <button type="submit" id="create" class="w3-button w3-blue w3-round-small">Create</button>
-    </p>
-</form>
 
 </body>
 </html>
