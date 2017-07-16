@@ -1,5 +1,6 @@
+import requests
 from bs4 import BeautifulSoup
-import re
+
 
 def extract_version(text):
     tokens = text.split()
@@ -8,9 +9,9 @@ def extract_version(text):
             return token.replace('¶', '').strip()
 
 
-def scrape(html_txt):
+def scrape(url):
     versions = []
-    tree = BeautifulSoup(html_txt)
+    tree = BeautifulSoup(requests.get(url).content, 'lxml')
     # find a heading with a version inside its text.  #.#.#
     for level in range(1,6):
         headings = tree.find_all('h{}'.format(level))
@@ -18,19 +19,17 @@ def scrape(html_txt):
             version = extract_version(heading.text)
             if version:
                 notes = []
-                # search the heading's siblings for a list.
-                print(heading)
                 for sibling in heading.find_next_siblings():
                     if sibling.name == 'ul':
                         for note in sibling.find_all('li'):
-                            notes.append(note.text)
+                            note = note.text
+                            if note and len(note):
+                                lower_note = note.lower()
+                                bug = False
+                                if 'bug' in lower_note or 'fix' in lower_note:
+                                    bug = True
+                                notes.append({'text': note, 'bug': bug})
                     # parse each list item as a note.
                 versions.append({'name': version, 'notes': notes})
     return versions
 
-
-
-if __name__ == '__main__':
-    import requests
-    resp = requests.get('http://flask.pocoo.org/docs/0.12/changelog/')
-    print(scrape(resp.content))

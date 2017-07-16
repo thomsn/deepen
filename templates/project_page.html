@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<title>Deepen</title>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+
+<style>
+    .navbar {
+        background-color: #eae151;
+    }
+    .navbar-brand {
+        color: #fafdf6;
+        font-size: 200%;
+        height: 150%;
+        line-height: 120%;
+    }
+    .card {
+        font-size: 1em;
+        overflow: hidden;
+        padding: 0;
+        border: none;
+        border-radius: .28571429rem;
+        box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+        margin-bottom: 1em;
+    }
+    .card-block {
+        font-size: 1em;
+        position: relative;
+        margin: 0;
+        padding: 1em;
+        border: none;
+        border-top: 1px solid rgba(34, 36, 38, .1);
+        box-shadow: none;
+    }
+</style>
+
+<body>
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div class="navbar-brand">
+                <p>Deepn - {{project.repo_url}}</p>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        {% for dep in project.deps %}
+
+        <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+            <a href="{{dep.page_url}}">
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title" >{{dep.name}}</h4>
+                    {% if dep.info is defined %}
+                    <p class="card-text">Updates  {{dep.info.num_updates}}</p>
+                    <p class="card-text">Bugs {{dep.info.num_bugs}}</p>
+                    {% else %}
+                    <p>Connect</p>
+                    {% endif %}
+                </div>
+            </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

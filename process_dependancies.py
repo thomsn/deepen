@@ -15,15 +15,3 @@ def get_latest_version(module):
 def test_module_name(module):
     # preventing a module name from escaping the cmd and messing with crap
     assert(module.isalnum())
-
-
-def compare_requirements(requirements):
-    results = []
-    for requirement in requirements:
-        if 'version' in requirement:
-            latest_version = get_latest_version(requirement['name'])
-            requirement['latest_version'] = latest_version
-            results.append(requirement)
-        else:
-            results.append(requirement)
-    return results
