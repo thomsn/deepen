@@ -6,7 +6,7 @@ class ScrapePyTxtDeps():
     def check(root):
         return os.path.isfile(os.path.join(root, 'requirements.txt'))
 
-    def scrape_dependancy(self, line):
+    def scrape_dependency(self, line):
         if '==' in line:
             spited = line.split('==')
             name = spited[0]
@@ -24,7 +24,7 @@ class ScrapePyTxtDeps():
             for line in req_file.readlines():
                 line = line.strip()
                 if line[0] != '#' and len(line):
-                    req = self.scrape_dependancy(line)
+                    req = self.scrape_dependency(line)
                     dependancies.append(req)
         return dependancies
 

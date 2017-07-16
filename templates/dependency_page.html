@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<title>Deepn - {{dependency.name}}</title>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+
+<style>
+    .navbar {
+        background-color: #eae151;
+    }
+    .navbar-brand {
+        color: #fafdf6;
+        font-size: 200%;
+    }
+    .the_content {
+        max-width: 500px;
+        margin-top: 65px;
+    }
+    .card {
+        font-size: 1em;
+        overflow: hidden;
+        padding: 0;
+        border: none;
+        border-radius: .28571429rem;
+        box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+        margin-bottom: 1em;
+    }
+    .card-block {
+        font-size: 1em;
+        position: relative;
+        margin: 0;
+        padding: 1em;
+        border: none;
+        border-top: 1px solid rgba(34, 36, 38, .1);
+        box-shadow: none;
+    }
+    .form-control {
+        background-color: #fafdf6;
+        height: inherit;
+        border-style: hidden;
+        border-radius: 1px;
+    }
+    .btn {
+        background-color: #ccc9a1;
+        color: #fafdf6;
+        height: inherit;
+        width: 50px;
+        border-style: hidden;
+        border-radius: 1px;
+    }
+    .input-group-btn {
+        height: inherit;
+    }
+    .input-group {
+        height: 40px;
+    }
+</style>
+
+<nav class="navbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+
+          <div class="navbar-brand">
+              <p><a href="/">Deepn</a> - {{dependency.name}}</p>
+          </div>
+
+    </div>
+  </div>
+</nav>
+
+<body>
+<div class="container-fluid the_content">
+    <form id="form" method="post">
+        <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" id="DependencyULR" placeholder="http://project.org/docs/changelog/" name="url"
+              value="{{dependency.release_note_url}}">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit" id="configure"> > </button>
+              </span>
+            </div>
+        </div>
+    </form>
+<p>Configure the release note location</p>
+</div>
+
+<div class="container">
+    <div class="row">
+        {% for version in dependency.versions %}
+        <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title" >{{version.name}}</h4>
+                    <lu>
+                        {% for note in version.notes %}
+                        <li {% if note.bug %}
+                            style="color: #FF0000"
+                            {% endif %}>
+                            {{note.text}}
+                        </li>
+                        {% endfor %}
+                    </lu>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

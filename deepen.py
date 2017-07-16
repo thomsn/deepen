@@ -15,7 +15,10 @@ def find_updates(version, all_versions):
         if ver['name'] == version:
             break
         updates.append(ver)
-    return updates
+    if len(updates) == len(all_versions): # if the version is not in versions
+        return []
+    else:
+        return updates
 
 
 def find_number_bugs(version, updates):
@@ -35,7 +38,7 @@ def get_dependencies(dependancies):
             updates = find_updates(project_dependency['version'], dependency['versions'])
             full_dependencies.append({
                 'name': dependency['name'],
-                'page_url': url_for('get_dependancy', name=dependency['name']),
+                'page_url': url_for('get_dependency', name=dependency['name']),
                 'info': {
                     'current_version': project_dependency['version'],
                     'latest_version': dependency['versions'][0]['name'],
@@ -48,7 +51,7 @@ def get_dependencies(dependancies):
             full_dependencies.append(
                 {
                     'name': project_dependency['name'],
-                    'page_url': url_for('get_dependancy', name=project_dependency['name']),
+                    'page_url': url_for('get_dependency', name=project_dependency['name']),
                     'info': {
                         'current_version': dependency['versions'][0]['name'],
                         'latest_version': dependency['versions'][0]['name'],
@@ -62,27 +65,27 @@ def get_dependencies(dependancies):
             full_dependencies.append(
                 {
                     'name': project_dependency['name'],
-                    'page_url': url_for('get_dependancy', name=project_dependency['name'])
+                    'page_url': url_for('get_dependency', name=project_dependency['name'])
                 }
             )
     return full_dependencies
 
 
-@app.route('/dependancy/<name>', methods=['GET'])
-def get_dependancy(name):
+@app.route('/dependency/<name>', methods=['GET'])
+def get_dependency(name):
     matching_deps = list(db.dependencies.find({'name': name}))
     if len(matching_deps):
         dependency = matching_deps[0]
-        return render_template('dependancy_page.html', dependancy=dependency)
+        return render_template('dependency_page.html', dependency=dependency)
     else:
-        return render_template('dependancy_page.html', dependancy={
+        return render_template('dependency_page.html', dependency={
                 'name': name
             }
         )
 
 
-@app.route('/dependancy/<name>', methods=['POST'])
-def create_dependancy(name):
+@app.route('/dependency/<name>', methods=['POST'])
+def create_dependency(name):
     data = dict((key, request.form.getlist(key)) for key in request.form.keys())
     url = data['url'][0]
     new_dep = {
@@ -94,7 +97,7 @@ def create_dependancy(name):
     if len(matching_deps):
         db.dependencies.replace_one({'name': name}, new_dep)
     db.dependencies.insert_one(new_dep)
-    return render_template('dependancy_page.html', dependancy=new_dep)
+    return render_template('dependency_page.html', dependency=new_dep)
 
 
 @app.route('/', methods=['GET'])

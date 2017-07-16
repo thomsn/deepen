@@ -26,8 +26,9 @@ def scrape(url):
                             if note and len(note):
                                 lower_note = note.lower()
                                 bug = False
-                                if 'bug' in lower_note or 'fix' in lower_note:
-                                    bug = True
+                                for error in ['bug', 'fix', 'issue']:
+                                    if error in lower_note:
+                                        bug = True
                                 notes.append({'text': note, 'bug': bug})
                     # parse each list item as a note.
                 versions.append({'name': version, 'notes': notes})
