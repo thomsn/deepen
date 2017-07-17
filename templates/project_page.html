@@ -20,22 +20,49 @@
         overflow: hidden;
         padding: 0;
         border: none;
-        border-radius: .28571429rem;
+        border-radius: 0px;
         box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-        margin-bottom: 1em;
+        margin: 8px;
+    }
+    .col-sm-6 {
+        padding: 0px;
     }
     .card-block {
+        text-align: center;
         font-size: 1em;
         position: relative;
         margin: 0;
-        padding: 1em;
         border: none;
         border-top: 1px solid rgba(34, 36, 38, .1);
         box-shadow: none;
+        height: 100px;
     }
     a {
-      color: inherit; /* blue colors for links too */
-      text-decoration: inherit; /* no underline */
+      color: inherit;
+      text-decoration: inherit;
+    }
+    a:hover {
+        color: inherit;
+        text-decoration: inherit;
+    }
+    .card:hover {
+        cursor: pointer;
+        cursor: hand;
+    }
+    .card-header {
+        font-size: 3em;
+        height: 2em;
+        background-color: #ddd92a;
+        color: #fafdf6;
+        line-height: 1em;
+        text-align: center;
+    }
+    span {
+        text-align: center;
+    }
+    b {
+        font-size: 3em;
+        color: #ddd92a;
     }
 </style>
 
@@ -44,7 +71,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <div class="navbar-brand">
-                <p><a href="/">Deepn</a> - <a href="?url={{project.repo_url}}">{{project.repo_url}}</a></p>
+                <p><a href="/">Deepn</a> - <a href="?url=https://{{project.repo_url}}">{{project.repo_url}}</a></p>
             </div>
         </div>
     </div>
@@ -55,15 +82,14 @@
         {% for dep in project.deps %}
         {% if dep.info is defined %}
         <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
-            <!--<button data-toggle="modal" data-target="#exampleModalLong{{dep.name}}">-->
                 <div class="card" id="card{{dep.name}}">
+                    <div class="card-header">
+                        <p>{{dep.name}}</p>
+                    </div>
                     <div class="card-block">
-                        <h4 class="card-title" >{{dep.name}}</h4>
-                        <p class="card-text">Updates  {{dep.info.num_updates}}</p>
-                        <p class="card-text">Bugs {{dep.info.num_bugs}}</p>
+                        <span class="card-text"><b>{{dep.info.num_updates}}</b> updates &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{dep.info.num_bugs}}</b> bugs</span>
                     </div>
                 </div>
-            <!--</button>-->
         </div>
 
 
@@ -72,9 +98,6 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h2 class="modal-title" id="exampleModalLongTitle"><a href="/dependency/{{dep.name}}">{{dep.name}}</a></h2>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
               </div>
               <div class="modal-body">
                   {% if dep.info.num_updates is not equalto '0' %}
@@ -112,9 +135,11 @@
         <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
             <a href="{{dep.page_url}}">
             <div class="card">
+                <div class="card-header">
+                    {{dep.name}}
+                </div>
                 <div class="card-block">
-                    <h4 class="card-title" >{{dep.name}}</h4>
-                    <p class="card-text">Connect</p>
+                    <b class="card-text">connect</b>
                 </div>
             </div>
                 </a>

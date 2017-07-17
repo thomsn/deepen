@@ -4,12 +4,22 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
 
 <style>
+    a {
+      color: inherit;
+      text-decoration: inherit;
+    }
+    a:hover {
+        color: inherit;
+        text-decoration: inherit;
+    }
     .navbar {
         background-color: #eae151;
     }
     .navbar-brand {
         color: #fafdf6;
         font-size: 200%;
+        height: 150%;
+        line-height: 120%;
     }
     .the_content {
         max-width: 500px;
@@ -60,6 +70,7 @@
               <span class="input-group-btn">
                 <button class="btn btn-default" type="submit" id="create"> > </button>
               </span>
+                <input type="submit" style="display:none"/>
             </div>
         </div>
     </form>

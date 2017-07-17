@@ -10,6 +10,16 @@
     .navbar-brand {
         color: #fafdf6;
         font-size: 200%;
+        height: 150%;
+        line-height: 120%;
+    }
+    a {
+      color: inherit;
+      text-decoration: inherit;
+    }
+    a:hover {
+        color: inherit;
+        text-decoration: inherit;
     }
     .the_content {
         max-width: 500px;
@@ -20,9 +30,9 @@
         overflow: hidden;
         padding: 0;
         border: none;
-        border-radius: .28571429rem;
+        border-radius: 0rem;
         box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
-        margin-bottom: 1em;
+        margin: 1em;
     }
     .card-block {
         font-size: 1em;
@@ -87,10 +97,8 @@
 <p>Configure the release note location</p>
 </div>
 
-<div class="container">
-    <div class="row">
+<div class="card-deck">
         {% for version in dependency.versions %}
-        <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
             <div class="card">
                 <div class="card-block">
                     <h4 class="card-title" >{{version.name}}</h4>
@@ -105,9 +113,7 @@
                     </lu>
                 </div>
             </div>
-        </div>
         {% endfor %}
-    </div>
 </div>
 
 
