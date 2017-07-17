@@ -6,12 +6,12 @@ def extract_version(text):
     tokens = text.split()
     for token in tokens:
         if '.' in token and 0 < token.index('.') < len(token) - 1 and len(token) >= 3:
-            return token.replace('¶', '').strip()
+            return token.lower().replace('¶', '').replace('v','').strip()
 
 
 def scrape(url):
     versions = []
-    tree = BeautifulSoup(requests.get(url).content, 'lxml')
+    tree = BeautifulSoup(requests.get(url).content, "html.parser")
     # find a heading with a version inside its text.  #.#.#
     for level in range(1,6):
         headings = tree.find_all('h{}'.format(level))

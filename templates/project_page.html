@@ -33,6 +33,10 @@
         border-top: 1px solid rgba(34, 36, 38, .1);
         box-shadow: none;
     }
+    a {
+      color: inherit; /* blue colors for links too */
+      text-decoration: inherit; /* no underline */
+    }
 </style>
 
 <body>
@@ -106,12 +110,14 @@
 
         {% else %}
         <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+            <a href="{{dep.page_url}}">
             <div class="card">
                 <div class="card-block">
                     <h4 class="card-title" >{{dep.name}}</h4>
-                    <p class="card-text"><a href="{{dep.page_url}}">Connect</a></p>
+                    <p class="card-text">Connect</p>
                 </div>
             </div>
+                </a>
         </div>
         {% endif %}
         {% endfor %}

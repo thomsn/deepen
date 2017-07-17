@@ -1,10 +1,13 @@
 import sys
+
+import logging
 from flask import Flask, request, render_template, redirect, flash, url_for
 
 from dependencies import EntryException
 from dependencies.deps import get_deps
 from pymongo import MongoClient
 
+from dependencies.url import clean_url
 from release_notes.scrape import scrape
 
 app = Flask(__name__)
@@ -111,7 +114,13 @@ def get_project():
     if not url:
         return render_template('entry_page.html')
     else:
-        url = url.lower()
+        try:
+            url = clean_url(url.lower())
+        except EntryException as e:
+            raise e
+        except Exception as e:
+            logging.info(e)
+            raise EntryException('Unable to access repository')
 
     # get the project
     matching_projects = list(db.projects.find({'repo_url': url}))
@@ -125,8 +134,6 @@ def get_project():
                 'deps': get_deps(url)
             }
             db.projects.insert_one(project)
-
-
 
         # get the dependencies
         project['deps'] = get_dependencies(project['deps'])

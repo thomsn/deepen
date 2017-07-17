@@ -15,15 +15,8 @@ class Repo():
 
     def __enter__(self):
         os.makedirs(self.dir_name)
-        if '@' in self.url:
-            shutil.rmtree(self.dir_name)
-            raise EntryException('Deepn does not work with private repositories')
         try:
-            validator = URLValidator()
-            validator(self.url)
-            parsed_url = urlparse(self.urlurl)
-            clean_url = "https://open:source@{}{}".format(parsed_url.netloc, parsed_url.path)
-            gitRepo.clone_from(clean_url, self.dir_name, depth=1, branch='master')
+            gitRepo.clone_from('https://open:source@{}'.format(self.url), self.dir_name, depth=1, branch='master')
         except Exception as e:
             shutil.rmtree(self.dir_name)
             logging.info(str(e))
