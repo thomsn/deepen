@@ -59,7 +59,11 @@
             </div>
         </div>
     </form>
-<p>See the dependancies of any repository</p>
+    {% if error is defined %}
+    <p style="color: #FF0000">{{error}}</p>
+    {% else %}
+    <p>See the dependancies of any repository</p>
+    {% endif %}
 </div>
 
 </body>

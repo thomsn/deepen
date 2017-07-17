@@ -9,3 +9,4 @@ def get_deps(url):
         for scraper in scrapers:
             if scraper.check(repo.dir_name):   # only handles one type at a time atm.
                 return scraper.scrape(repo.dir_name)
+    return []

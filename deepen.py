@@ -1,5 +1,7 @@
 import sys
 from flask import Flask, request, render_template, redirect, flash, url_for
+
+from dependencies import EntryException
 from dependencies.deps import get_deps
 from pymongo import MongoClient
 
@@ -29,6 +31,7 @@ def find_number_bugs(version, updates):
                 num_bugs += 1
     return num_bugs
 
+
 def get_dependencies(dependencies):
     full_dependencies = []
     for project_dependency in dependencies:
@@ -38,7 +41,7 @@ def get_dependencies(dependencies):
             updates = find_updates(project_dependency['version'], dependency['versions'])
             full_dependencies.append({
                 'name': dependency['name'],
-#                'page_url': url_for('get_dependency', name=dependency['name']),
+                'page_url': url_for('get_dependency', name=dependency['name']),
                 'info': {
                     'current_version': project_dependency['version'],
                     'latest_version': dependency['versions'][0]['name'],
@@ -51,7 +54,7 @@ def get_dependencies(dependencies):
             full_dependencies.append(
                 {
                     'name': project_dependency['name'],
-#                    'page_url': url_for('get_dependency', name=project_dependency['name']),
+                    'page_url': url_for('get_dependency', name=project_dependency['name']),
                     'info': {
                         'current_version': dependency['versions'][0]['name'],
                         'latest_version': dependency['versions'][0]['name'],
@@ -65,7 +68,7 @@ def get_dependencies(dependencies):
             full_dependencies.append(
                 {
                     'name': project_dependency['name'],
-#                    'page_url': url_for('get_dependency', name=project_dependency['name'])
+                    'page_url': url_for('get_dependency', name=project_dependency['name'])
                 }
             )
     return full_dependencies
@@ -103,6 +106,7 @@ def create_dependency(name):
 @app.route('/', methods=['GET'])
 def get_project():
     # get the url
+
     url = request.args.get('url')
     if not url:
         return render_template('entry_page.html')
@@ -111,17 +115,26 @@ def get_project():
 
     # get the project
     matching_projects = list(db.projects.find({'repo_url': url}))
-    if len(matching_projects):
-        project = matching_projects[0]
-    else:
-        project = {
-            'repo_url': url,
-            'deps': get_deps(url)
-        }
-        db.projects.insert_one(project)
 
-    # get the dependencies
-    project['deps'] = get_dependencies(project['deps'])
+    try:
+        if len(matching_projects):
+            project = matching_projects[0]
+        else:
+            project = {
+                'repo_url': url,
+                'deps': get_deps(url)
+            }
+            db.projects.insert_one(project)
 
-    return render_template('project_page.html', project=project)
+
+
+        # get the dependencies
+        project['deps'] = get_dependencies(project['deps'])
+        if len(project['deps']) == 0:
+            raise EntryException('There where no dependancies in the project')
+
+        return render_template('project_page.html', project=project)
+
+    except EntryException as e:
+        return render_template('entry_page.html', error=str(e))
 
