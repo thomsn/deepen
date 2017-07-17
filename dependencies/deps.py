@@ -1,6 +1,6 @@
-from dependancies.repo import Repo
-from dependancies.py_txt.scrape import ScrapePyTxtDeps
-from dependancies.py_setup.scrape import ScrapePySetupDeps
+from dependencies.repo import Repo
+from dependencies.py_txt.scrape import ScrapePyTxtDeps
+from dependencies.py_setup.scrape import ScrapePySetupDeps
 
 
 def get_deps(url):

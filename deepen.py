@@ -1,6 +1,6 @@
 import sys
 from flask import Flask, request, render_template, redirect, flash, url_for
-from dependancies.deps import get_deps
+from dependencies.deps import get_deps
 from pymongo import MongoClient
 
 from release_notes.scrape import scrape
@@ -29,9 +29,9 @@ def find_number_bugs(version, updates):
                 num_bugs += 1
     return num_bugs
 
-def get_dependencies(dependancies):
+def get_dependencies(dependencies):
     full_dependencies = []
-    for project_dependency in dependancies:
+    for project_dependency in dependencies:
         matching_deps = list(db.dependencies.find({'name': project_dependency['name']}))
         if len(matching_deps) and 'version' in project_dependency:
             dependency = matching_deps[0]
@@ -120,7 +120,7 @@ def get_project():
         }
         db.projects.insert_one(project)
 
-    # get the dependancies
+    # get the dependencies
     project['deps'] = get_dependencies(project['deps'])
 
     return render_template('project_page.html', project=project)

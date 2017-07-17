@@ -1,7 +1,7 @@
 import unittest
 
-from dependancies.py_setup.scrape import ScrapePySetupDeps
-from dependancies.repo import Repo
+from dependencies.py_setup.scrape import ScrapePySetupDeps
+from dependencies.repo import Repo
 
 
 class TestScrape(unittest.TestCase):

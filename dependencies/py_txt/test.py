@@ -1,6 +1,6 @@
 import unittest
-from dependancies.repo import Repo
-from dependancies.py_txt.scrape import ScrapePyTxtDeps
+from dependencies.repo import Repo
+from dependencies.py_txt.scrape import ScrapePyTxtDeps
 
 
 class TestScrape(unittest.TestCase):
