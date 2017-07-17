@@ -38,26 +38,26 @@ def get_dependencies(dependancies):
             updates = find_updates(project_dependency['version'], dependency['versions'])
             full_dependencies.append({
                 'name': dependency['name'],
-                'page_url': url_for('get_dependency', name=dependency['name']),
+#                'page_url': url_for('get_dependency', name=dependency['name']),
                 'info': {
                     'current_version': project_dependency['version'],
                     'latest_version': dependency['versions'][0]['name'],
                     'num_updates': len(updates),
                     'num_bugs': find_number_bugs(project_dependency['version'], updates),
-                    'updates': updates # must make only updates
+                    'updates': list(reversed(updates))
                 }
             })
         elif len(matching_deps):
             full_dependencies.append(
                 {
                     'name': project_dependency['name'],
-                    'page_url': url_for('get_dependency', name=project_dependency['name']),
+#                    'page_url': url_for('get_dependency', name=project_dependency['name']),
                     'info': {
                         'current_version': dependency['versions'][0]['name'],
                         'latest_version': dependency['versions'][0]['name'],
                         'num_updates': '0',
                         'num_bugs': '0',
-                        'updates': matching_deps[0]['versions']
+                        'updates': list(reversed(matching_deps[0]['versions']))
                     }
                 }
             )
@@ -65,7 +65,7 @@ def get_dependencies(dependancies):
             full_dependencies.append(
                 {
                     'name': project_dependency['name'],
-                    'page_url': url_for('get_dependency', name=project_dependency['name'])
+#                    'page_url': url_for('get_dependency', name=project_dependency['name'])
                 }
             )
     return full_dependencies

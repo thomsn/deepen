@@ -12,7 +12,7 @@ class TestScrape(unittest.TestCase):
     ]
 
     def test_PySetup(self):
-        with Repo('https://github.com/django/django.git') as repo:
+        with Repo('https://github.com/twilio/twilio-python.git') as repo:
             scraper = ScrapePySetupDeps()
             deps = scraper.scrape(repo.dir_name)
 

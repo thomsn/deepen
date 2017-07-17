@@ -2,6 +2,8 @@
 <html>
 <title>Deepen</title>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <style>
     .navbar {
@@ -47,22 +49,71 @@
 <div class="container">
     <div class="row">
         {% for dep in project.deps %}
-
+        {% if dep.info is defined %}
         <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
-            <a href="{{dep.page_url}}">
+            <!--<button data-toggle="modal" data-target="#exampleModalLong{{dep.name}}">-->
+                <div class="card" id="card{{dep.name}}">
+                    <div class="card-block">
+                        <h4 class="card-title" >{{dep.name}}</h4>
+                        <p class="card-text">Updates  {{dep.info.num_updates}}</p>
+                        <p class="card-text">Bugs {{dep.info.num_bugs}}</p>
+                    </div>
+                </div>
+            <!--</button>-->
+        </div>
+
+
+        <div class="modal fade" id="modal{{dep.name}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLongTitle"><a href="/dependency/{{dep.name}}">{{dep.name}}</a></h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  {% if dep.info.num_updates is not equalto '0' %}
+                      <h3>Version {{dep.info.current_version}} to {{dep.info.latest_version}}</h3>
+                  {% else %}
+                        <h3>All Versions</h3>
+                  {% endif %}
+                {% for update in dep.info.updates %}
+                    <h4>{{update.name}}</h4>
+                    <lu>
+                        {% for note in update.notes %}
+                        <li {% if note.bug %}
+                            style="color: #FF0000"
+                            {% endif %}>
+                            {{note.text}}
+                        </li>
+                        {% endfor %}
+                    </lu>
+                {% endfor %}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script>
+            $("#card{{dep.name}}").on("click", function(){
+                $('#modal{{dep.name}}').modal('toggle');
+            });
+        </script>
+
+        {% else %}
+        <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
             <div class="card">
                 <div class="card-block">
                     <h4 class="card-title" >{{dep.name}}</h4>
-                    {% if dep.info is defined %}
-                    <p class="card-text">Updates  {{dep.info.num_updates}}</p>
-                    <p class="card-text">Bugs {{dep.info.num_bugs}}</p>
-                    {% else %}
-                    <p>Connect</p>
-                    {% endif %}
+                    <p class="card-text"><a href="{{dep.page_url}}">Connect</a></p>
                 </div>
             </div>
-            </a>
         </div>
+        {% endif %}
         {% endfor %}
     </div>
 </div>
