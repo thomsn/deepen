@@ -26,7 +26,7 @@ def find_updates(version, all_versions):
         return updates
 
 
-def find_number_bugs(version, updates):
+def find_number_bugs(updates):
     num_bugs = 0
     for update in updates:
         for note in update['notes']:
@@ -49,7 +49,7 @@ def get_dependencies(dependencies):
                     'current_version': project_dependency['version'],
                     'latest_version': dependency['versions'][0]['name'],
                     'num_updates': len(updates),
-                    'num_bugs': find_number_bugs(project_dependency['version'], updates),
+                    'num_bugs': find_number_bugs(updates),
                     'updates': list(reversed(updates))
                 }
             })
@@ -61,8 +61,8 @@ def get_dependencies(dependencies):
                     'info': {
                         'current_version': dependency['versions'][0]['name'],
                         'latest_version': dependency['versions'][0]['name'],
-                        'num_updates': '0',
-                        'num_bugs': '0',
+                        'num_updates': 0,
+                        'num_bugs': 0,
                         'updates': list(reversed(matching_deps[0]['versions']))
                     }
                 }

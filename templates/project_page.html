@@ -4,14 +4,20 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
 
 <style>
+    body {
+        font-family: Roboto, sans-serif;
+        font-weight: 400;
+    }
     .navbar {
         background-color: #eae151;
     }
     .navbar-brand {
         color: #fafdf6;
-        font-size: 200%;
+        font-size: 2em;
         height: 150%;
         line-height: 120%;
     }
@@ -50,7 +56,7 @@
         cursor: hand;
     }
     .card-header {
-        font-size: 3em;
+        font-size: 1.6em;
         height: 2em;
         background-color: #ddd92a;
         color: #fafdf6;
@@ -61,8 +67,12 @@
         text-align: center;
     }
     b {
-        font-size: 3em;
+        font-size: 4em;
         color: #ddd92a;
+        font-weight: 100;
+    }
+    .modal-content {
+        border-radius: 0px;
     }
 </style>
 
@@ -87,7 +97,11 @@
                         <p>{{dep.name}}</p>
                     </div>
                     <div class="card-block">
-                        <span class="card-text"><b>{{dep.info.num_updates}}</b> updates &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{dep.info.num_bugs}}</b> bugs</span>
+                        {% if dep.info.num_updates is not equalto 0 %}
+                            <span class="card-text"><b>{{dep.info.num_updates}}</b> updates &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{dep.info.num_bugs}}</b> bugs</span>
+                        {% else %}
+                        <p>using latest {{dep.info.current_version}}</p>
+                        {% endif %}
                     </div>
                 </div>
         </div>
@@ -100,7 +114,7 @@
                 <h2 class="modal-title" id="exampleModalLongTitle"><a href="/dependency/{{dep.name}}">{{dep.name}}</a></h2>
               </div>
               <div class="modal-body">
-                  {% if dep.info.num_updates is not equalto '0' %}
+                  {% if dep.info.num_updates is not equalto 0 %}
                       <h3>Version {{dep.info.current_version}} to {{dep.info.latest_version}}</h3>
                   {% else %}
                         <h3>All Versions</h3>
@@ -139,7 +153,7 @@
                     {{dep.name}}
                 </div>
                 <div class="card-block">
-                    <b class="card-text">connect</b>
+                    <p class="card-text">connect</p>
                 </div>
             </div>
                 </a>
