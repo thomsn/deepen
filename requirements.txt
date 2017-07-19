@@ -1,0 +1,6 @@
+pymongo
+beautifulsoup4
+Django
+Flask
+GitPython
+requests

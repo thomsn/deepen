@@ -1,4 +1,4 @@
-import sys
+import sys, os
 
 import logging
 from flask import Flask, request, render_template, redirect, flash, url_for
@@ -11,8 +11,11 @@ from dependencies.url import clean_url
 from release_notes.scrape import scrape
 
 app = Flask(__name__)
-db = MongoClient('localhost:27017').deepen
-
+if os.path.isfile('config.py'):
+    app.config.from_pyfile('config.py')
+    db = MongoClient(app.config['MONGODB_URI']).deepen
+else:
+    db = MongoClient()
 
 def find_updates(version, all_versions):
     updates = []
@@ -145,3 +148,6 @@ def get_project():
     except EntryException as e:
         return render_template('entry_page.html', error=str(e))
 
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
